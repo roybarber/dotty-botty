@@ -177,7 +177,7 @@ export function App() {
       <main id="top">
         <section className="hero">
           <div className="hero-copy">
-            <h1>Dotty, a tiny character for your agents and generative UI.</h1>
+            <h1>Dotty, a tiny character for your agents</h1>
             <p>
               Give your AI agent a face. Dotty is a procedural SVG character for React whose states map onto what an
               agent is doing, like thinking while the model reasons or working while a tool runs. It blinks, follows the
