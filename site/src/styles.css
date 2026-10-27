@@ -1,32 +1,17 @@
+/* Dark only, whatever the system setting. */
 :root {
-  --page: #f7f5f0;
-  --panel: #ffffff;
-  --text: #16151a;
-  --muted: #69676f;
-  --line: rgba(22, 21, 26, 0.1);
-  --chip: #eeebe3;
-  --chip-on: #16151a;
-  --chip-on-text: #ffffff;
-  --code: #16151a;
+  --page: #0f0f12;
+  --panel: #18181c;
+  --text: #f2f1ee;
+  --muted: #a09fa6;
+  --line: rgba(255, 255, 255, 0.1);
+  --chip: #25252a;
+  --chip-on: #f2f1ee;
+  --chip-on-text: #111114;
+  --code: #000000;
   --code-text: #f2efe8;
-  --accent: #2f6bff;
-  color-scheme: light;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --page: #0f0f12;
-    --panel: #18181c;
-    --text: #f2f1ee;
-    --muted: #a09fa6;
-    --line: rgba(255, 255, 255, 0.1);
-    --chip: #25252a;
-    --chip-on: #f2f1ee;
-    --chip-on-text: #111114;
-    --code: #000000;
-    --code-text: #f2efe8;
-    --accent: #7ea2ff;
-    color-scheme: dark;
-  }
+  --accent: #7ea2ff;
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
