@@ -3,5 +3,7 @@
   "installCommand": "pnpm install --frozen-lockfile",
   "buildCommand": "pnpm --filter dotty-botty-site build",
   "outputDirectory": "site/dist",
-  "framework": null
+  "framework": null,
+  "redirects": [{ "source": "/", "destination": "/dotty/", "permanent": false }],
+  "rewrites": [{ "source": "/dotty", "destination": "/dotty/index.html" }]
 }

@@ -9,7 +9,7 @@
     "url": "git+https://github.com/roybarber/dotty-botty.git",
     "directory": "packages/dotty-botty"
   },
-  "homepage": "https://github.com/roybarber/dotty-botty#readme",
+  "homepage": "https://roybarber.com/dotty",
   "bugs": "https://github.com/roybarber/dotty-botty/issues",
   "keywords": ["react", "svg", "animation", "character", "mascot", "avatar", "agent", "ai", "generative-ui", "loader"],
   "type": "module",

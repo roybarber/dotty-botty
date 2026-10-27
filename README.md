@@ -8,7 +8,7 @@ Dotty is a tiny procedural SVG character for your agents and generative UI. Its 
 - Respects `prefers-reduced-motion`
 - MIT licensed
 
-**Demo and docs:** https://dotty-botty.vercel.app
+**Demo and docs:** https://roybarber.com/dotty
 
 ## Install
 
