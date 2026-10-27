@@ -42,6 +42,19 @@ const PALETTES: Palette[] = [
   { name: 'Slate', swatch: '#475569', ink: '#475569', spot: '#f8fafc' },
 ];
 
+// Eye colors layered over the body palette. null keeps the palette's own pairing.
+const EYES: { name: string; spot: string | null }[] = [
+  { name: 'Match body color', spot: null },
+  { name: 'White', spot: '#ffffff' },
+  { name: 'Black', spot: '#16151a' },
+  { name: 'Cream', spot: '#f3efe2' },
+  { name: 'Yellow', spot: '#ffd60a' },
+  { name: 'Orange', spot: '#ff6b1a' },
+  { name: 'Pink', spot: '#ff8fc7' },
+  { name: 'Mint', spot: '#5eead4' },
+  { name: 'Blue', spot: '#3b82f6' },
+];
+
 const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
 
 let highlighter: Promise<typeof import('./highlight')> | null = null;
@@ -137,17 +150,19 @@ export function App() {
   const [expression, setExpression] = useState<ExpressionName | null>(null);
   const [shape, setShape] = useState<ShapeName>('ghost');
   const [palette, setPalette] = useState(PALETTES[0]);
+  const [eye, setEye] = useState(EYES[0]);
   const [follow, setFollow] = useState(true);
   const [reduced, setReduced] = useState(false);
 
-  const shared = { followPointer: follow, reducedMotion: reduced || undefined, ink: palette.ink, spot: palette.spot };
+  const spot = eye.spot ?? palette.spot;
+  const shared = { followPointer: follow, reducedMotion: reduced || undefined, ink: palette.ink, spot };
 
   const jsxProps = [
     state !== 'idle' && `state="${state}"`,
     shape !== 'ghost' && `shape="${shape}"`,
     expression && `expression="${expression}"`,
     palette.ink && `ink="${palette.ink}"`,
-    palette.spot && `spot="${palette.spot}"`,
+    spot && `spot="${spot}"`,
     !follow && 'followPointer={false}',
     'size={160}',
   ].filter(Boolean);
@@ -219,7 +234,7 @@ export function App() {
             />
             <Chips label="Shape" items={SHAPE_NAMES.map((s) => [s, cap(s)])} value={shape} onChange={setShape} />
             <fieldset className="chips">
-              <legend>Color</legend>
+              <legend>Body color</legend>
               {PALETTES.map((p) => (
                 <button
                   key={p.name}
@@ -230,6 +245,21 @@ export function App() {
                   aria-pressed={p === palette}
                   style={{ background: p.swatch }}
                   onClick={() => setPalette(p)}
+                />
+              ))}
+            </fieldset>
+            <fieldset className="chips">
+              <legend>Eye color</legend>
+              {EYES.map((e) => (
+                <button
+                  key={e.name}
+                  type="button"
+                  className={e.spot ? 'swatch' : 'swatch swatch-auto'}
+                  title={e.name}
+                  aria-label={`${e.name} eyes`}
+                  aria-pressed={e === eye}
+                  style={{ background: e.spot ?? palette.spot ?? '#ffffff' }}
+                  onClick={() => setEye(e)}
                 />
               ))}
             </fieldset>

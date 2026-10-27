@@ -100,6 +100,8 @@ h3 { font-size: 18px; margin: 28px 0 8px; }
 }
 .chip[aria-pressed='true'] { background: var(--chip-on); color: var(--chip-on-text); }
 .swatch { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--line); cursor: pointer; padding: 0; }
+/* "Match body color" shows the palette's own eye color with a diagonal mark. */
+.swatch-auto { background-image: linear-gradient(135deg, transparent 45%, var(--muted) 45% 55%, transparent 55%) !important; }
 .swatch[aria-pressed='true'] { box-shadow: 0 0 0 2px var(--panel), 0 0 0 4px var(--text); }
 .toggles { display: flex; gap: 20px; flex-wrap: wrap; font-size: 14px; }
 .toggles label { display: inline-flex; gap: 8px; align-items: center; cursor: pointer; }
