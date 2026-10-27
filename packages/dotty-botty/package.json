@@ -1,6 +1,6 @@
 {
   "name": "dotty-botty",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Dotty, a tiny procedural SVG character for your agents and generative UI. React, 27 shapes, 12 expressions, 9 animated states, no dependencies.",
   "license": "MIT",
   "author": "Roy Barber",
