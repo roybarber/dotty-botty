@@ -25,7 +25,6 @@
     --code: #000000;
     --code-text: #f2efe8;
     --accent: #7ea2ff;
-    --dotty-spot: #111114;
     color-scheme: dark;
   }
 }
@@ -52,7 +51,8 @@ code { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 0.9em;
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
 }
-.brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; text-decoration: none; letter-spacing: -0.01em; }
+/* The character has built-in breathing room inside its box, so pull the text in. */
+.brand { display: inline-flex; align-items: center; gap: 0; font-weight: 700; text-decoration: none; letter-spacing: -0.01em; }
 .top nav { display: flex; gap: 18px; font-size: 14px; flex-wrap: wrap; justify-content: flex-end; }
 .top nav a { text-decoration: none; color: var(--muted); }
 .top nav a:hover { color: var(--text); }
@@ -75,6 +75,7 @@ h3 { font-size: 18px; margin: 28px 0 8px; }
 
 .code { position: relative; background: var(--code); color: var(--code-text); border-radius: 12px; margin: 12px 0; }
 .code pre { margin: 0; padding: 14px 72px 14px 16px; overflow-x: auto; font-size: 14px; line-height: 1.55; }
+.code .shiki { background: transparent !important; }
 .copy {
   position: absolute; top: 8px; right: 8px;
   border: 0; border-radius: 8px; padding: 6px 10px; font: inherit; font-size: 12px; cursor: pointer;
@@ -116,6 +117,7 @@ h3 { font-size: 18px; margin: 28px 0 8px; }
 .prose p { margin: 0 0 12px; }
 .prose p code, .sub code, td code { background: var(--chip); padding: 1px 6px; border-radius: 6px; }
 
+.sub.after-table { margin-top: 16px; }
 .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); margin-top: 16px; }
 table { width: 100%; border-collapse: collapse; font-size: 14px; }
 th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }

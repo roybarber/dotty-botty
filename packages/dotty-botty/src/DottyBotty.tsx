@@ -33,7 +33,7 @@ export interface DottyBottyProps {
   reducedMotion?: boolean;
   /** Width and height in px (or any CSS length). */
   size?: number | string;
-  /** Body color; defaults to currentColor. */
+  /** Body color; defaults to orange (#ff6b1a). */
   ink?: string;
   /** Eye color; defaults to white. */
   spot?: string;
@@ -48,7 +48,7 @@ export interface DottyBottyProps {
 }
 
 export function DottyBotty({
-  shape = 'blob',
+  shape = 'ghost',
   state = 'idle',
   expression = null,
   followPointer = true,

@@ -1,6 +1,6 @@
 # dotty-botty
 
-A tiny procedural SVG character for React. It blinks, glances around, follows the pointer, and squashes when you poke it.
+Dotty is a tiny procedural SVG character for your agents and generative UI. Its states map onto what an agent is doing, like thinking while the model reasons or working while a tool runs. It blinks, follows the pointer, and squashes when you poke it.
 
 - 27 shapes, 12 expressions, 9 animated states
 - About 7 KB gzipped, no dependencies
@@ -28,13 +28,19 @@ export function EmptyInbox() {
 }
 ```
 
-Drive it from your app state:
+Give an agent a face by mapping your chat status onto a state. This uses `useChat` from the Vercel AI SDK, but any loading flag works:
 
 ```tsx
+const { status } = useChat();
+
 <DottyBotty
-  state={isSaving ? 'working' : saved ? 'celebrating' : 'idle'}
-  shape="cat"
-  ink="#2f6bff"
+  state={
+    status === 'submitted' ? 'thinking'
+    : status === 'streaming' ? 'working'
+    : status === 'error' ? 'alert'
+    : 'idle'
+  }
+  label="Assistant"
 />
 ```
 
@@ -52,10 +58,10 @@ const bot = useRef<DottyBottyHandle>(null);
 | Prop | Type | Default | What it does |
 | --- | --- | --- | --- |
 | `state` | `StateName` | `'idle'` | Which animation plays. Changing it cross-fades the motion. |
-| `shape` | `ShapeName` | `'blob'` | Body outline. Changing it morphs from the current shape. |
+| `shape` | `ShapeName` | `'ghost'` | Body outline. Changing it morphs from the current shape. |
 | `expression` | `ExpressionName \| null` | `null` | Pins the eyes to one expression. `null` lets the state decide. |
 | `size` | `number \| string` | `120` | Width and height, in px or any CSS length. |
-| `ink` | `string` | `currentColor` | Body color. Also settable with `--dotty-ink`. |
+| `ink` | `string` | `'#ff6b1a'` | Body color. Also settable with `--dotty-ink`. |
 | `spot` | `string` | `'#fff'` | Eye color. Also settable with `--dotty-spot`. |
 | `followPointer` | `boolean` | `true` | Eyes track the pointer anywhere on the page. |
 | `maxFrameRate` | `number` | `60` | Caps how often this character redraws. |
@@ -75,7 +81,7 @@ const bot = useRef<DottyBottyHandle>(null);
 
 ## Theming
 
-The body uses `currentColor` by default, so it follows your text color. Set CSS variables on any ancestor to restyle every character inside it:
+Dotty is orange by default. Pass `ink` and `spot`, or set CSS variables on any ancestor to restyle every character inside it. Use `currentColor` to follow your text color.
 
 ```css
 .sidebar {
@@ -93,6 +99,10 @@ All characters on a page share one `requestAnimationFrame` loop. A character sto
 ## Accessibility
 
 Without a `label` the character is decorative (`aria-hidden`). With one it is announced as an image. With `pokeable` it renders a real `<button>` that works from the keyboard.
+
+## Inspiration
+
+Dotty is inspired by agent characters like the Grok bot from xAI. It is an independent project written from scratch and is not affiliated with xAI.
 
 ## License
 

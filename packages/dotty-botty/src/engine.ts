@@ -7,7 +7,7 @@
  * wrapper in DottyBotty.tsx is a thin shell around createEngine().
  *
  * Colours come from CSS custom properties on any ancestor:
- *   --dotty-ink   body and extras (defaults to currentColor)
+ *   --dotty-ink   body and extras (defaults to orange, #ff6b1a)
  *   --dotty-spot  eyes (defaults to #fff)
  */
 
@@ -299,8 +299,8 @@ export const STATE_NAMES = Object.keys(STATES) as StateName[];
 
 /* ---------- serialisation ---------- */
 
-const INK = 'fill:var(--dotty-ink,currentColor)';
-const INK_LINE = 'stroke:var(--dotty-ink,currentColor)';
+const INK = 'fill:var(--dotty-ink,#ff6b1a)';
+const INK_LINE = 'stroke:var(--dotty-ink,#ff6b1a)';
 const SPOT = 'fill:var(--dotty-spot,#fff)';
 const TEXT = `${INK};font-family:system-ui,sans-serif`;
 
@@ -497,7 +497,7 @@ export interface EngineHandle {
 
 type Resolved = Required<Omit<EngineOptions, 'reducedMotion'>> & { reducedMotion?: boolean };
 
-const DEFAULTS: Resolved = { shape: 'blob', state: 'idle', expression: null, followPointer: true, maxFrameRate: 60 };
+const DEFAULTS: Resolved = { shape: 'ghost', state: 'idle', expression: null, followPointer: true, maxFrameRate: 60 };
 
 class Engine implements EngineHandle {
   private opts: Resolved;

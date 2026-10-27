@@ -1,7 +1,7 @@
 {
   "name": "dotty-botty",
   "version": "0.1.0",
-  "description": "A tiny procedural SVG character for React: 27 shapes, 12 expressions, 9 animated states, no dependencies.",
+  "description": "Dotty, a tiny procedural SVG character for your agents and generative UI. React, 27 shapes, 12 expressions, 9 animated states, no dependencies.",
   "license": "MIT",
   "author": "Roy Barber",
   "repository": {
@@ -11,7 +11,7 @@
   },
   "homepage": "https://github.com/roybarber/dotty-botty#readme",
   "bugs": "https://github.com/roybarber/dotty-botty/issues",
-  "keywords": ["react", "svg", "animation", "character", "mascot", "avatar", "loader"],
+  "keywords": ["react", "svg", "animation", "character", "mascot", "avatar", "agent", "ai", "generative-ui", "loader"],
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.cjs",

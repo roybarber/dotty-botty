@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
   DottyBotty,
@@ -11,16 +11,41 @@ import {
   type StateName,
 } from 'dotty-botty';
 
-const PALETTES = [
-  { name: 'Ink', ink: undefined, spot: undefined },
-  { name: 'Tomato', ink: '#ff5a36', spot: '#2b0d06' },
-  { name: 'Cobalt', ink: '#2f6bff', spot: '#f4f8ff' },
-  { name: 'Moss', ink: '#3e7d4f', spot: '#f3f1e7' },
-  { name: 'Grape', ink: '#6a3cc8', spot: '#ffffff' },
-  { name: 'Sun', ink: '#ffc21a', spot: '#2a1d00' },
+import type { Lang } from './highlight';
+
+interface Palette {
+  name: string;
+  swatch: string;
+  ink?: string;
+  spot?: string;
+}
+
+// Orange has no ink/spot so it shows the component defaults (and the snippet stays short).
+const PALETTES: Palette[] = [
+  { name: 'Orange', swatch: '#ff6b1a' },
+  { name: 'Ink', swatch: 'var(--text)', ink: 'currentColor', spot: 'var(--page)' },
+  { name: 'Tomato', swatch: '#ff4a2e', ink: '#ff4a2e', spot: '#2b0d06' },
+  { name: 'Cherry', swatch: '#c81e3a', ink: '#c81e3a', spot: '#fff1f3' },
+  { name: 'Rose', swatch: '#f43f5e', ink: '#f43f5e', spot: '#ffffff' },
+  { name: 'Bubblegum', swatch: '#f472b6', ink: '#f472b6', spot: '#4a0d2c' },
+  { name: 'Peach', swatch: '#fdba74', ink: '#fdba74', spot: '#431407' },
+  { name: 'Sun', swatch: '#ffc21a', ink: '#ffc21a', spot: '#2a1d00' },
+  { name: 'Lime', swatch: '#a3e635', ink: '#a3e635', spot: '#1a2e05' },
+  { name: 'Moss', swatch: '#3e7d4f', ink: '#3e7d4f', spot: '#f3f1e7' },
+  { name: 'Mint', swatch: '#34d399', ink: '#34d399', spot: '#052e1f' },
+  { name: 'Teal', swatch: '#0d9488', ink: '#0d9488', spot: '#f0fdfa' },
+  { name: 'Sky', swatch: '#38bdf8', ink: '#38bdf8', spot: '#082f49' },
+  { name: 'Cobalt', swatch: '#2f6bff', ink: '#2f6bff', spot: '#f4f8ff' },
+  { name: 'Navy', swatch: '#1e3a8a', ink: '#1e3a8a', spot: '#dbeafe' },
+  { name: 'Lavender', swatch: '#a78bfa', ink: '#a78bfa', spot: '#1e1340' },
+  { name: 'Grape', swatch: '#6a3cc8', ink: '#6a3cc8', spot: '#ffffff' },
+  { name: 'Slate', swatch: '#475569', ink: '#475569', spot: '#f8fafc' },
 ];
 
 const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
+
+let highlighter: Promise<typeof import('./highlight')> | null = null;
+const loadHighlighter = () => (highlighter ??= import('./highlight'));
 
 function useCopy() {
   const [copied, setCopied] = useState<string | null>(null);
@@ -36,12 +61,29 @@ function useCopy() {
   return { copied, copy };
 }
 
-function Code({ id, code, copy }: { id: string; code: string; copy: ReturnType<typeof useCopy> }) {
+function Code({ id, code, lang = 'tsx', copy }: { id: string; code: string; lang?: Lang; copy: ReturnType<typeof useCopy> }) {
+  const [html, setHtml] = useState<string | null>(null);
+
+  useEffect(() => {
+    let live = true;
+    loadHighlighter()
+      .then((m) => m.highlight(code, lang))
+      .then((h) => live && setHtml(h))
+      .catch(() => live && setHtml(null));
+    return () => {
+      live = false;
+    };
+  }, [code, lang]);
+
   return (
     <div className="code">
-      <pre>
-        <code>{code}</code>
-      </pre>
+      {html ? (
+        <div className="highlighted" dangerouslySetInnerHTML={{ __html: html }} />
+      ) : (
+        <pre>
+          <code>{code}</code>
+        </pre>
+      )}
       <button type="button" className="copy" onClick={() => copy.copy(id, code)}>
         {copy.copied === id ? 'Copied' : 'Copy'}
       </button>
@@ -74,10 +116,10 @@ function Chips<T extends string | null>({
 
 const PROPS: [string, string, string, string][] = [
   ['state', 'StateName', "'idle'", 'Which animation plays. Changing it cross-fades the motion.'],
-  ['shape', 'ShapeName', "'blob'", 'Body outline. Changing it morphs from the current shape.'],
+  ['shape', 'ShapeName', "'ghost'", 'Body outline. Changing it morphs from the current shape.'],
   ['expression', 'ExpressionName | null', 'null', 'Pins the eyes to one expression. null lets the state decide.'],
   ['size', 'number | string', '120', 'Width and height, in px or any CSS length.'],
-  ['ink', 'string', 'currentColor', 'Body color. Also settable with the --dotty-ink CSS variable.'],
+  ['ink', 'string', "'#ff6b1a'", 'Body color. Also settable with the --dotty-ink CSS variable.'],
   ['spot', 'string', "'#fff'", 'Eye color. Also settable with the --dotty-spot CSS variable.'],
   ['followPointer', 'boolean', 'true', 'Eyes track the pointer anywhere on the page.'],
   ['maxFrameRate', 'number', '60', 'Caps how often this character redraws.'],
@@ -93,7 +135,7 @@ export function App() {
   const bot = useRef<DottyBottyHandle>(null);
   const [state, setState] = useState<StateName>('idle');
   const [expression, setExpression] = useState<ExpressionName | null>(null);
-  const [shape, setShape] = useState<ShapeName>('blob');
+  const [shape, setShape] = useState<ShapeName>('ghost');
   const [palette, setPalette] = useState(PALETTES[0]);
   const [follow, setFollow] = useState(true);
   const [reduced, setReduced] = useState(false);
@@ -102,7 +144,7 @@ export function App() {
 
   const jsxProps = [
     state !== 'idle' && `state="${state}"`,
-    shape !== 'blob' && `shape="${shape}"`,
+    shape !== 'ghost' && `shape="${shape}"`,
     expression && `expression="${expression}"`,
     palette.ink && `ink="${palette.ink}"`,
     palette.spot && `spot="${palette.spot}"`,
@@ -120,7 +162,7 @@ export function App() {
     <>
       <header className="top">
         <a className="brand" href="#top">
-          <DottyBotty size={28} state="idle" {...shared} />
+          <DottyBotty size={30} {...shared} />
           <span>dotty-botty</span>
         </a>
         <nav>
@@ -135,29 +177,31 @@ export function App() {
       <main id="top">
         <section className="hero">
           <div className="hero-copy">
-            <h1>A tiny character for your React app.</h1>
+            <h1>Dotty, a tiny character for your agents and generative UI.</h1>
             <p>
-              Dotty Botty is a procedural SVG character that blinks, glances, follows the pointer, and reacts when you
-              poke it. Drop it into empty states, loaders, onboarding, or anywhere a bit of personality helps.
+              Give your AI agent a face. Dotty is a procedural SVG character for React whose states map onto what an
+              agent is doing, like thinking while the model reasons or working while a tool runs. It blinks, follows the
+              pointer, and reacts when you poke it.
             </p>
-            <Code id="install" code="npm install dotty-botty" copy={copy} />
+            <Code id="install" code="npm install dotty-botty" lang="bash" copy={copy} />
             <ul className="facts">
               <li>27 shapes</li>
               <li>12 expressions</li>
               <li>9 animated states</li>
+              <li>18 colors to start from</li>
               <li>No dependencies</li>
               <li>MIT</li>
             </ul>
           </div>
           <div className="hero-bot">
-            <DottyBotty size="min(300px, 70vw)" state={state} shape={shape} expression={expression} pokeable label="Dotty Botty. Press to poke." {...shared} />
+            <DottyBotty size="min(300px, 70vw)" state={state} shape={shape} expression={expression} pokeable label="Dotty. Press to poke." {...shared} />
             <p className="hint">Click it.</p>
           </div>
         </section>
 
         <section id="playground" className="panel playground">
           <div className="pg-stage">
-            <DottyBotty ref={bot} size={200} state={state} shape={shape} expression={expression} pokeable label={`Dotty Botty, ${state}. Press to poke.`} {...shared} />
+            <DottyBotty ref={bot} size={200} state={state} shape={shape} expression={expression} pokeable label={`Dotty, ${state}. Press to poke.`} {...shared} />
             <div className="pg-actions">
               <button type="button" className="chip" onClick={() => bot.current?.poke()}>Poke</button>
               <button type="button" className="chip" onClick={() => bot.current?.blink()}>Blink</button>
@@ -181,9 +225,10 @@ export function App() {
                   key={p.name}
                   type="button"
                   className="swatch"
+                  title={p.name}
                   aria-label={`${p.name} color`}
                   aria-pressed={p === palette}
-                  style={{ background: p.ink ?? 'var(--text)' }}
+                  style={{ background: p.swatch }}
                   onClick={() => setPalette(p)}
                 />
               ))}
@@ -201,7 +246,7 @@ export function App() {
           <div className="gallery">
             {STATE_NAMES.map((s) => (
               <button key={s} type="button" className="card" aria-pressed={s === state} onClick={() => pick(() => setState(s))}>
-                <DottyBotty size={84} state={s} shape={s === 'sleeping' ? 'pebble' : 'blob'} {...shared} />
+                <DottyBotty size={84} state={s} shape={shape} {...shared} />
                 <small>{cap(s)}</small>
               </button>
             ))}
@@ -233,14 +278,24 @@ export function EmptyInbox() {
   return <DottyBotty state="sleeping" size={96} label="Nothing here yet" />;
 }`}
           />
-          <h3>Drive it from your app state</h3>
+          <h3>Give an agent a face</h3>
+          <p>
+            Map your chat status onto a state. This example uses <code>useChat</code> from the Vercel AI SDK, but any
+            loading flag works.
+          </p>
           <Code
-            id="state"
+            id="agent"
             copy={copy}
-            code={`<DottyBotty
-  state={isSaving ? 'working' : saved ? 'celebrating' : 'idle'}
-  shape="cat"
-  ink="#2f6bff"
+            code={`const { status } = useChat();
+
+<DottyBotty
+  state={
+    status === 'submitted' ? 'thinking'
+    : status === 'streaming' ? 'working'
+    : status === 'error' ? 'alert'
+    : 'idle'
+  }
+  label="Assistant"
 />`}
           />
           <h3>Poke and blink on demand</h3>
@@ -254,11 +309,13 @@ export function EmptyInbox() {
           />
           <h3>Theme with CSS</h3>
           <p>
-            The body uses <code>currentColor</code> by default, so it follows your text color. Set{' '}
-            <code>--dotty-ink</code> and <code>--dotty-spot</code> on any ancestor to restyle every character inside it.
+            Dotty is orange by default. Pass <code>ink</code> and <code>spot</code>, or set <code>--dotty-ink</code> and{' '}
+            <code>--dotty-spot</code> on any ancestor to restyle every character inside it. Use{' '}
+            <code>currentColor</code> to follow your text color.
           </p>
           <Code
             id="css"
+            lang="css"
             copy={copy}
             code={`.sidebar {
   --dotty-ink: #3e7d4f;
@@ -291,7 +348,7 @@ export function EmptyInbox() {
               </tbody>
             </table>
           </div>
-          <p className="sub">
+          <p className="sub after-table">
             <code>STATE_NAMES</code>, <code>SHAPE_NAMES</code> and <code>EXPRESSION_NAMES</code> are exported for building
             pickers like the one above.
           </p>
@@ -316,11 +373,22 @@ export function EmptyInbox() {
             announced as an image. With <code>pokeable</code> it becomes a real button you can reach and press from
             the keyboard.
           </p>
+          <h3>Inspiration</h3>
+          <p>
+            Dotty is inspired by agent characters like the Grok bot from xAI. It is an independent project written from
+            scratch and is not affiliated with xAI.
+          </p>
         </section>
       </main>
 
       <footer className="foot">
-        <span>MIT licensed. Made by Roy Barber.</span>
+        <span>
+          MIT licensed. Made by{' '}
+          <a href="https://roybarber.com" target="_blank" rel="noopener" referrerPolicy="origin">
+            Roy Barber
+          </a>
+          .
+        </span>
         <a href="https://github.com/roybarber/dotty-botty">Source on GitHub</a>
       </footer>
     </>
