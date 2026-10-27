@@ -1,0 +1,10 @@
+{
+  "name": "dotty-botty-monorepo",
+  "private": true,
+  "packageManager": "pnpm@12.4.1",
+  "scripts": {
+    "build": "pnpm --filter dotty-botty build && pnpm --filter dotty-botty-site build",
+    "dev": "pnpm --filter dotty-botty-site dev",
+    "typecheck": "pnpm -r --filter ./packages/* typecheck"
+  }
+}
