@@ -2,5 +2,5 @@ packages:
   - packages/*
   - site
 
-allowBuilds:
-  esbuild: true
+onlyBuiltDependencies:
+  - esbuild
