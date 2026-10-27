@@ -17,7 +17,7 @@ const bot = (props) => renderToStaticMarkup(h(DottyBotty, { followPointer: false
 
 const friends = [
   { shape: 'cat', ink: '#2f6bff', spot: '#f4f8ff', expression: 'happy', x: 676, y: 62, size: 118 },
-  { shape: 'bunny', ink: '#6a3cc8', spot: '#ffffff', expression: 'neutral', x: 1036, y: 44, size: 112 },
+  { shape: 'bunny', ink: '#a78bfa', spot: '#1e1340', expression: 'neutral', x: 1036, y: 44, size: 112 },
   { shape: 'heart', ink: '#f43f5e', spot: '#ffffff', expression: 'calm', x: 1074, y: 270, size: 96 },
   { shape: 'bear', ink: '#3e7d4f', spot: '#f3f1e7', expression: 'surprised', x: 1022, y: 458, size: 116 },
   { shape: 'cloud', ink: '#38bdf8', spot: '#082f49', expression: 'sleepy', x: 668, y: 470, size: 108 },
@@ -26,16 +26,16 @@ const friends = [
 
 const og = `<!doctype html><html><head><meta charset="utf-8"><style>
   * { box-sizing: border-box; margin: 0; }
-  body { width: 1200px; height: 630px; overflow: hidden; background: #f7f5f0; color: #16151a;
+  body { width: 1200px; height: 630px; overflow: hidden; background: #0f0f12; color: #f2f1ee;
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif; position: relative; }
   .copy { position: absolute; left: 72px; top: 72px; bottom: 64px; width: 560px; display: flex; flex-direction: column; }
   .brand { display: flex; align-items: center; font-size: 26px; font-weight: 700; letter-spacing: -0.01em; }
   h1 { font-size: 132px; line-height: 0.95; letter-spacing: -0.045em; margin-top: 56px; }
-  p { font-size: 44px; line-height: 1.12; letter-spacing: -0.02em; margin-top: 18px; color: #3a3940; font-weight: 600; }
+  p { font-size: 44px; line-height: 1.12; letter-spacing: -0.02em; margin-top: 18px; color: #c9c7cf; font-weight: 600; }
   .foot { margin-top: auto; display: flex; gap: 14px; align-items: center; font-size: 24px; }
-  .pill { white-space: nowrap; background: #16151a; color: #f2efe8; border-radius: 14px; padding: 12px 18px;
+  .pill { white-space: nowrap; background: #000000; border: 1px solid rgba(255, 255, 255, 0.14); color: #f2efe8; border-radius: 14px; padding: 12px 18px;
     font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 22px; }
-  .url { white-space: nowrap; color: #69676f; font-weight: 600; }
+  .url { white-space: nowrap; color: #a09fa6; font-weight: 600; }
   .hero { position: absolute; left: 744px; top: 150px; }
   .f { position: absolute; }
 </style></head><body>
